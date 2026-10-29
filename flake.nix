@@ -9,10 +9,14 @@
       #
       home-manager.url = "github:nix-community/home-manager";
       home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+      #
+      zen-browser.url = "github:0xc000022070/zen-browser-flake";
+      zen-browser.inputs.nixpkgs.follows = "nixpkgs";
     };
 
     #
-    outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+    outputs = { self, nixpkgs, home-manager, zen-browser, ... }@inputs: {
       nixosConfigurations.ilo = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 	modules = [
@@ -25,6 +29,7 @@
 	  {
 	    home-manager.useGlobalPkgs = true;
 	    home-manager.useUserPackages = true;
+	    home-manager.extraSpecialArgs = { inherit inputs; };
 	    home-manager.users.lvy = import ./home.nix;
 	  }
 	];
